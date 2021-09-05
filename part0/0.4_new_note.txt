@@ -1,0 +1,31 @@
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+server->browser: text/html
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server->browser: text/css
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+server->browser: application/javascript
+note over browser: browser executes js-code that requests json data from server
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server->browser: application/json
+note over browser: browser executes the event that renders notes to display
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
+server->browser: text/html
+note over browser: browser sends a new value from input element
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+server->browser: text/html
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server->browser: text/css
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+server->browser: application/javascript
+note over browser: browser executes js-code that requests json data from server
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server->browser: application/json
+note over browser: browser executes the event that renders notes to display
