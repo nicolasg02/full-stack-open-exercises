@@ -8,6 +8,8 @@ const Form = ({
   setNewName,
   newNumber,
   setNewNumber,
+  setSuccessMessage,
+  setErrorMessage,
 }) => {
   const handleNewPerson = event => {
     event.preventDefault();
@@ -26,6 +28,7 @@ const Form = ({
           `${contactObj.name} is already added to phonebook, replace the old number with a new one?`
         );
 
+        // change number
         if (confirm) {
           const changedPerson = { ...personObj, number: contactObj.number };
 
@@ -37,6 +40,20 @@ const Form = ({
                   person.id !== changedPerson.id ? person : returnedPerson
                 )
               );
+              setSuccessMessage(
+                `${changedPerson.name}'s number as been changed.`
+              );
+              setTimeout(() => {
+                setSuccessMessage(null);
+              }, 3000);
+            })
+            .catch(error => {
+              setErrorMessage(
+                `Information of ${newName} has already been removed from server`
+              );
+              setTimeout(() => {
+                setErrorMessage(null);
+              }, 3000);
             });
         } else {
           return;
@@ -51,6 +68,10 @@ const Form = ({
       setPersons(persons.concat(returnedNote));
       setNewName('');
       setNewNumber('');
+      setSuccessMessage(`Added ${contactObj.name}`);
+      setTimeout(() => {
+        setSuccessMessage(null);
+      }, 3000);
     });
   };
 
