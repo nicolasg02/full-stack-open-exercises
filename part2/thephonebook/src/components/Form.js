@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import personService from '../services/persons';
 
 const Form = ({
   persons,
@@ -8,39 +9,66 @@ const Form = ({
   newNumber,
   setNewNumber,
 }) => {
-  const handleNewPerson = (event) => {
+  const handleNewPerson = event => {
     event.preventDefault();
-
-    const contact = {
+    const contactObj = {
       name: newName,
       number: newNumber,
+      id: persons.length + 1,
     };
 
-    persons.forEach((person) => {
-      if (person.name === newName) {
-        alert(`${newName} is already added to the phonebook`);
-        setPersons(persons);
-      } else {
-        setPersons(persons.concat(contact));
+    const personObj = persons.find(person => person.name === contactObj.name);
+
+    // if person name already exists:
+    if (personObj) {
+      if (personObj.number !== contactObj.number) {
+        const confirm = window.confirm(
+          `${contactObj.name} is already added to phonebook, replace the old number with a new one?`
+        );
+
+        if (confirm) {
+          const changedPerson = { ...personObj, number: contactObj.number };
+
+          return personService
+            .update(changedPerson.id, changedPerson)
+            .then(returnedPerson => {
+              setPersons(
+                persons.map(person =>
+                  person.id !== changedPerson.id ? person : returnedPerson
+                )
+              );
+            });
+        } else {
+          return;
+        }
       }
+
+      return alert(`${contactObj.name} is already added to phonebook.`);
+    }
+
+    // add new person
+    personService.create(contactObj).then(returnedNote => {
+      setPersons(persons.concat(returnedNote));
+      setNewName('');
+      setNewNumber('');
     });
   };
 
-  const handleNewNumber = (event) => {
+  const handleNewNumber = event => {
     setNewNumber(event.target.value);
   };
 
-  const handleNewName = (event) => {
+  const handleNewName = event => {
     setNewName(event.target.value);
   };
 
   return (
     <form onSubmit={handleNewPerson}>
       <div>
-        name: <input onChange={handleNewName} />
+        name: <input value={newName} onChange={handleNewName} />
       </div>
       <div>
-        number: <input onChange={handleNewNumber} />
+        number: <input value={newNumber} onChange={handleNewNumber} />
       </div>
       <div>
         <button type="submit">add</button>
