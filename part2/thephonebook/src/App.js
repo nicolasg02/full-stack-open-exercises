@@ -9,13 +9,17 @@ import personService from './services/persons';
 
 const App = () => {
   const [persons, setPersons] = useState([]);
+  const [displayPersons, setDisplayPersons] = useState([]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [successMessage, setSuccessMessage] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
-    personService.getAll().then(initialPersons => setPersons(initialPersons));
+    personService.getAll().then(initialPersons => {
+      setPersons(initialPersons);
+      setDisplayPersons(initialPersons);
+    });
   }, []);
 
   const handleRemovePerson = id => {
@@ -33,7 +37,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <Notification message={successMessage} />
       <ErrorNotification message={errorMessage} />
-      <Filter persons={persons} setPersons={setPersons} />
+      <Filter persons={persons} setDisplayPersons={setDisplayPersons} />
       <h3>Add a new</h3>
       <Form
         persons={persons}
@@ -47,7 +51,7 @@ const App = () => {
       />
       <h2>Numbers</h2>
       <div>
-        {persons.map((person, i) => (
+        {displayPersons.map((person, i) => (
           <Person
             key={i}
             person={person}

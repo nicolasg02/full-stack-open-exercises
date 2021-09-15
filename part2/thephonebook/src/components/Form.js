@@ -1,5 +1,5 @@
-import React from 'react';
-import personService from '../services/persons';
+import React from 'react'
+import personService from '../services/persons'
 
 const Form = ({
   persons,
@@ -12,25 +12,24 @@ const Form = ({
   setErrorMessage,
 }) => {
   const handleNewPerson = event => {
-    event.preventDefault();
+    event.preventDefault()
     const contactObj = {
       name: newName,
       number: newNumber,
-      id: persons.length + 1,
-    };
+    }
 
-    const personObj = persons.find(person => person.name === contactObj.name);
+    const personObj = persons.find(person => person.name === contactObj.name)
 
     // if person name already exists:
     if (personObj) {
       if (personObj.number !== contactObj.number) {
         const confirm = window.confirm(
           `${contactObj.name} is already added to phonebook, replace the old number with a new one?`
-        );
+        )
 
         // change number
         if (confirm) {
-          const changedPerson = { ...personObj, number: contactObj.number };
+          const changedPerson = { ...personObj, number: contactObj.number }
 
           return personService
             .update(changedPerson.id, changedPerson)
@@ -39,49 +38,49 @@ const Form = ({
                 persons.map(person =>
                   person.id !== changedPerson.id ? person : returnedPerson
                 )
-              );
+              )
               setSuccessMessage(
                 `${changedPerson.name}'s number as been changed.`
-              );
+              )
               setTimeout(() => {
-                setSuccessMessage(null);
-              }, 3000);
+                setSuccessMessage(null)
+              }, 3000)
             })
             .catch(error => {
               setErrorMessage(
                 `Information of ${newName} has already been removed from server`
-              );
+              )
               setTimeout(() => {
-                setErrorMessage(null);
-              }, 3000);
-            });
+                setErrorMessage(null)
+              }, 3000)
+            })
         } else {
-          return;
+          return
         }
       }
 
-      return alert(`${contactObj.name} is already added to phonebook.`);
+      return alert(`${contactObj.name} is already added to phonebook.`)
     }
 
     // add new person
     personService.create(contactObj).then(returnedNote => {
-      setPersons(persons.concat(returnedNote));
-      setNewName('');
-      setNewNumber('');
-      setSuccessMessage(`Added ${contactObj.name}`);
+      setPersons(persons.concat(returnedNote))
+      setNewName('')
+      setNewNumber('')
+      setSuccessMessage(`Added ${contactObj.name}`)
       setTimeout(() => {
-        setSuccessMessage(null);
-      }, 3000);
-    });
-  };
+        setSuccessMessage(null)
+      }, 3000)
+    })
+  }
 
   const handleNewNumber = event => {
-    setNewNumber(event.target.value);
-  };
+    setNewNumber(event.target.value)
+  }
 
   const handleNewName = event => {
-    setNewName(event.target.value);
-  };
+    setNewName(event.target.value)
+  }
 
   return (
     <form onSubmit={handleNewPerson}>
@@ -95,7 +94,7 @@ const Form = ({
         <button type="submit">add</button>
       </div>
     </form>
-  );
-};
+  )
+}
 
-export default Form;
+export default Form
