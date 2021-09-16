@@ -40,9 +40,16 @@ const Form = ({
                   person.id !== changedPerson.id ? person : returnedPerson
                 )
               );
+              setDisplayPersons(
+                persons.map(person =>
+                  person.id !== changedPerson.id ? person : returnedPerson
+                )
+              );
               setSuccessMessage(
                 `${changedPerson.name}'s number as been changed.`
               );
+              setNewName('');
+              setNewNumber('');
               setTimeout(() => {
                 setSuccessMessage(null);
               }, 3000);
