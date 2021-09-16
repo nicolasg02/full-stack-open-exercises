@@ -23,12 +23,13 @@ const App = () => {
   }, []);
 
   const handleRemovePerson = id => {
-    const personName = persons.filter(person => person.id === id);
-    const confirmDelete = window.confirm(`Delete ${personName[0].name}?`);
+    const person = persons.find(n => n.id === id);
+    const confirmDelete = window.confirm(`Delete ${person.name}?`);
 
     if (confirmDelete) {
-      personService.remove(id);
       setPersons(persons.filter(person => person.id !== id));
+      setDisplayPersons(persons.filter(person => person.id !== id));
+      personService.remove(id);
     }
   };
 
@@ -42,6 +43,7 @@ const App = () => {
       <Form
         persons={persons}
         setPersons={setPersons}
+        setDisplayPersons={setDisplayPersons}
         newName={newName}
         setNewName={setNewName}
         newNumber={newNumber}
@@ -51,9 +53,9 @@ const App = () => {
       />
       <h2>Numbers</h2>
       <div>
-        {displayPersons.map((person, i) => (
+        {displayPersons.map(person => (
           <Person
-            key={i}
+            key={person.id}
             person={person}
             handleRemovePerson={() => handleRemovePerson(person.id)}
           />
