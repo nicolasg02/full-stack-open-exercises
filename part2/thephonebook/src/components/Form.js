@@ -71,16 +71,25 @@ const Form = ({
     }
 
     // add new person
-    personService.create(contactObj).then(returnedNote => {
-      setPersons(persons.concat(returnedNote));
-      setDisplayPersons(persons.concat(returnedNote));
-      setNewName('');
-      setNewNumber('');
-      setSuccessMessage(`Added ${contactObj.name}`);
-      setTimeout(() => {
-        setSuccessMessage(null);
-      }, 3000);
-    });
+    personService
+      .create(contactObj)
+      .then(returnedNote => {
+        setPersons(persons.concat(returnedNote));
+        setDisplayPersons(persons.concat(returnedNote));
+        setNewName('');
+        setNewNumber('');
+        setSuccessMessage(`Added ${contactObj.name}`);
+        setTimeout(() => {
+          setSuccessMessage(null);
+        }, 3000);
+      })
+      .catch(error => {
+        const errMessage = error.response.data.error;
+        setErrorMessage(errMessage);
+        setTimeout(() => {
+          setErrorMessage(null);
+        }, 3000);
+      });
   };
 
   const handleNewNumber = event => {

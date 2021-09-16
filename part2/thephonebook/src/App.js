@@ -30,6 +30,11 @@ const App = () => {
       setPersons(persons.filter(person => person.id !== id));
       setDisplayPersons(persons.filter(person => person.id !== id));
       personService.remove(id);
+
+      setSuccessMessage(`${person.name} deleted successfully.`);
+      setTimeout(() => {
+        setSuccessMessage(null);
+      }, 3000);
     }
   };
 
